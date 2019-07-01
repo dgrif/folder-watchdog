@@ -32,7 +32,7 @@ let CalcFolderSize folder =
 
 let FolderWatchdogHandler folderToCheck maxSize = 
     let totalSize = CalcFolderSize folderToCheck
-    printfn "[ ] Folder Size: %i" (int64(ByteToMB ((float)totalSize)))
+    printfn "[+] Folder Size: %iMB" (int64(ByteToMB ((float)totalSize)))
     let szInMb = ByteToMB ((float)totalSize)
     let files = EnumFiles folderToCheck "*"
     if szInMb >= maxSize then
@@ -47,6 +47,8 @@ let WatchdogTimer timerInterval wdh =
     async {
         timer.Start()
         do! Async.Sleep timerInterval
+        //DEBUG, in the program this will be infinite until program dies.
+        timer.Stop()
     }
 
 // folder and time should be variables, input as cli args or prompted for if none
