@@ -11,7 +11,7 @@ let DeleteFiles (files : string[]) =
         
 
 let ByteToMB szB = szB * 0.000001
-//let MBtoByte szM = szM / 0.000001 //TODO: verify this, it's prob incorrect
+let MBtoByte szM = szM / 0.000001 //TODO: verify this, it's prob incorrect
 let updateFSize a b = a + b
 
 //let files = EnumFiles "C:\\sr\\" "*"
@@ -48,11 +48,11 @@ let WatchdogTimer timerInterval wdh =
         timer.Start()
         do! Async.Sleep timerInterval
         //DEBUG, in the program this will be infinite until program dies.
-        timer.Stop()
+        //timer.Stop()
     }
 
 // folder and time should be variables, input as cli args or prompted for if none
-let wdHandler _ = FolderWatchdogHandler "C:\\temp" 100000.0
-let aTimer = WatchdogTimer 30000 wdHandler
+let wdHandler _ = FolderWatchdogHandler "C:\\temp"  100000.0
+let aTimer = WatchdogTimer 15000 wdHandler
 Async.RunSynchronously aTimer
 //let wdt = WatchdogTimer 30 (FolderWatchdogHandler "C:\\temp" 100000.0)

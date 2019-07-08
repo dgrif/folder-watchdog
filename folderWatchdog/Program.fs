@@ -38,7 +38,7 @@ let FolderWatchdogHandler folderToCheck maxSize =
     let szInMb = ByteToMB ((float)totalSize)
     let files = EnumFiles folderToCheck "*"
     if szInMb >= maxSize then
-        printfn "\t[!] Total size exceeds threashold: %i MB\nDeleting files!" (int64(szInMb))
+        printfn "\t[!] Total size exceeds threshold: %i MB\nDeleting files!" (int64(szInMb))
         DeleteFiles files
 
 let WatchdogTimer timerInterval wdh =
@@ -56,11 +56,14 @@ let WatchdogTimer timerInterval wdh =
 [<EntryPoint>]
 let main argv = 
     let numArgs = argv.Length
-    if numArgs = 2 then
-        printfn "arg1: %s arg2: %s" argv.[0] argv.[1]
+    if numArgs = 3 then
+        printfn "%s %s %s" argv.[0] argv.[1] argv.[2]
         let wdHandler _ = FolderWatchdogHandler argv.[0] (argv.[1] |> float)
-        let aTimer = WatchdogTimer (argv.[3] |> int) wdHandler
+        let aTimer = WatchdogTimer (argv.[2] |> int) wdHandler
         Async.RunSynchronously aTimer
-        0
+        
     else
-        1 // return an integer exit code
+        printfn "Usage: folderWatchdog.exe <folder> <Max MB size> <timer>"
+        //1 // return an integer exit code
+    
+    0
